@@ -15,12 +15,12 @@
 
         <ImageView
             android:id="@+id/image_logo"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="8dp"
             android:contentDescription="@null"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/logo_256px" />
 
         <EditText
             android:id="@+id/username"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_margin="8dp"
-            android:background="@drawable/btn_green"
+            android:background="@drawable/btn_orange"
             android:text="ลงชื่อเข้าใช้"
             android:textColor="@color/white"
             android:textSize="20sp"
