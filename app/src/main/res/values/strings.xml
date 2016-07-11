@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">durable</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Durable</string>
+    <string name="press_one_again">กดอีกครั้งเพื่อออกจากแอพ</string>
+    <string name="click_forget_password">ลืมรหัสผ่าน<u>คลิกที่นี้</u></string>
 </resources>
