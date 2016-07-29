@@ -1,5 +1,6 @@
 package com.iceoton.durable.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.MainFragment;
+import com.iceoton.durable.util.AppPreference;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -113,11 +115,22 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_logout) {
-
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        AppPreference appPreference = new AppPreference(MainActivity.this);
+        appPreference.saveUserId("");
+        appPreference.saveUserName("");
+        appPreference.saveLoginStatus(false);
+
+        Intent logoutIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(logoutIntent);
+        finish();
     }
 }
