@@ -85,7 +85,6 @@ public class LoginFragment extends Fragment {
             e.printStackTrace();
         }
 
-        AppPreference preference = new AppPreference(getActivity());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call call = apiService.userLogin("userLogin", data.toString());
         call.enqueue(new Callback<UserResponse>() {
