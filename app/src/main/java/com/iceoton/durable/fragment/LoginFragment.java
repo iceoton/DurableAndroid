@@ -4,6 +4,7 @@ package com.iceoton.durable.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.activity.MainActivity;
+import com.iceoton.durable.model.User;
+import com.iceoton.durable.model.UserResponse;
+import com.iceoton.durable.rest.ApiClient;
+import com.iceoton.durable.rest.ApiInterface;
 import com.iceoton.durable.util.AppPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
     EditText etUsername, etPassword;
@@ -47,8 +57,8 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startMainActivity();
-                //loginToServer(etUsername.getText().toString().trim(), etPassword.getText().toString());
+                //startMainActivity();
+                loginToServer(etUsername.getText().toString().trim(), etPassword.getText().toString());
             }
         });
 
@@ -76,37 +86,33 @@ public class LoginFragment extends Fragment {
         }
 
         AppPreference preference = new AppPreference(getActivity());
-        /*Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(preference.getApiUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call call = apiService.userLogin("userLogin", data.toString());
+        call.enqueue(new Callback<UserResponse>() {
 
-        CanomCakeService canomCakeService = retrofit.create(CanomCakeService.class);
-        Call call = canomCakeService.loginToServer("loginCustomer", data.toString());
-        call.enqueue(new Callback<UserLoginResponse>() {
             @Override
-            public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
-                if (response.body().getUser() != null) {
-                    User user = response.body().getUser();
-                    Log.d("DEBUG", "id = " + user.getId());
+                if (response.body().getResult() != null) {
+                    User user = response.body().getResult();
+                    Log.d("DEBUG", "id = " + user.getUserKey());
                     AppPreference appPreference = new AppPreference(getActivity());
-                    appPreference.saveUserId(user.getId());
+                    appPreference.saveUserId(user.getUserKey());
                     appPreference.saveUserName(user.getEmail());
                     appPreference.saveLoginStatus(true);
 
                     startMainActivity();
                 } else {
                     Log.d("DEBUG", "Login error: " + response.body().getErrorMessage());
-                    Toast.makeText(getActivity(), "ไม่พบอีเมลนี้หรือรหัสผ่านไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.body().getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<UserLoginResponse> call, Throwable t) {
-                Log.d("DEBUG", "Call CanomCake-API failure." + "\n" + t.getMessage());
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.d("DEBUG", "Call API failure." + "\n" + t.getMessage());
             }
-        });*/
+        });
     }
 
 
