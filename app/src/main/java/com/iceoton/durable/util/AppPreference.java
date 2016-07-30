@@ -10,24 +10,24 @@ public class AppPreference {
         sharedPref = context.getSharedPreferences("AppPref", Context.MODE_PRIVATE);
     }
 
-    public void saveLoginStatus(boolean isLoggedIn){
+    public void saveLoginStatus(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("loginStatus", isLoggedIn);
         editor.apply();
     }
 
-    public boolean getLoginStatus(){
-        return  sharedPref.getBoolean("loginStatus", false);
+    public boolean getLoginStatus() {
+        return sharedPref.getBoolean("loginStatus", false);
     }
 
-    public void saveUserId(String id){
+    public void saveUserId(String id) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("user_id", id);
         editor.apply();
     }
 
-    public String getUserId(){
-        return  sharedPref.getString("user_id", null);
+    public String getUserId() {
+        return sharedPref.getString("user_id", null);
     }
 
     public void saveUserName(String name) {
@@ -38,6 +38,16 @@ public class AppPreference {
 
     public String getUserName() {
         return sharedPref.getString("user_name", "");
+    }
+
+    public void saveUserEmail(String email) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("user_email", email);
+        editor.apply();
+    }
+
+    public String getUserEmail() {
+        return sharedPref.getString("user_email", "");
     }
 
     public void saveAppLanguage(String language) {
