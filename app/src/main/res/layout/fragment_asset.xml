@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.iceoton.durable.fragment.MainFragment">
 
-    <ImageView
-        android:id="@+id/btn_scan_qrcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/scan_qr_code" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -17,6 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@drawable/ic_note_add_white" />
 
 </android.support.design.widget.CoordinatorLayout>
