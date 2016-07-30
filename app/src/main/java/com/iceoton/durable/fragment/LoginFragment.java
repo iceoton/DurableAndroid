@@ -2,6 +2,7 @@ package com.iceoton.durable.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.activity.MainActivity;
@@ -21,10 +21,12 @@ import com.iceoton.durable.model.UserResponse;
 import com.iceoton.durable.rest.ApiClient;
 import com.iceoton.durable.rest.ApiInterface;
 import com.iceoton.durable.util.AppPreference;
+import com.iceoton.durable.util.InternetConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +60,16 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //startMainActivity();
-                loginToServer(etUsername.getText().toString().trim(), etPassword.getText().toString());
+                String username = etUsername.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                if(!username.isEmpty() && !password.isEmpty()) {
+                    loginToServer(etUsername.getText().toString().trim(), etPassword.getText().toString());
+                } else {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(getActivity().getString(R.string.title_warning))
+                            .setContentText(getActivity().getString(R.string.please_enter_data))
+                            .show();
+                }
             }
         });
 
@@ -76,42 +87,75 @@ public class LoginFragment extends Fragment {
         imgLogo = (ImageView) rootView.findViewById(R.id.image_logo);
     }
 
-    private void loginToServer(String username, String password) {
-        JSONObject data = new JSONObject();
-        try {
-            data.put("username", username);
-            data.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void loginToServer(final String username, final String password) {
+        if (InternetConnection.isNetworkConnected(getActivity())) {
+            final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText(getActivity().getString(R.string.loading));
+            pDialog.setCancelable(false);
+            pDialog.show();
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call call = apiService.userLogin("userLogin", data.toString());
-        call.enqueue(new Callback<UserResponse>() {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("username", username);
+                data.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call call = apiService.userLogin("userLogin", data.toString());
+            call.enqueue(new Callback<UserResponse>() {
 
-                if (response.body().getResult() != null) {
-                    User user = response.body().getResult();
-                    Log.d("DEBUG", "id = " + user.getUserKey());
-                    AppPreference appPreference = new AppPreference(getActivity());
-                    appPreference.saveUserId(user.getUserKey());
-                    appPreference.saveUserName(user.getEmail());
-                    appPreference.saveLoginStatus(true);
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    pDialog.dismissWithAnimation();
+                    if (response.body().getResult() != null) {
+                        User user = response.body().getResult();
+                        Log.d("DEBUG", "id = " + user.getUserKey());
+                        AppPreference appPreference = new AppPreference(getActivity());
+                        appPreference.saveUserId(user.getUserKey());
+                        appPreference.saveUserName(user.getEmail());
+                        appPreference.saveLoginStatus(true);
 
-                    startMainActivity();
-                } else {
-                    Log.d("DEBUG", "Login error: " + response.body().getErrorMessage());
-                    Toast.makeText(getActivity(), response.body().getErrorMessage(), Toast.LENGTH_SHORT).show();
+                        startMainActivity();
+                    } else {
+                        Log.d("DEBUG", "Login error: " + response.body().getErrorMessage());
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getActivity().getString(R.string.title_warning))
+                                .setContentText(response.body().getErrorMessage())
+                                .show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.d("DEBUG", "Call API failure." + "\n" + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    pDialog.dismissWithAnimation();
+                    Log.d("DEBUG", "Call API failure." + "\n" + t.getMessage());
+                }
+            });
+
+        } else {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getActivity().getString(R.string.title_warning))
+                    .setContentText(getActivity().getString(R.string.internet_connection_fail))
+                    .setConfirmText(getActivity().getString(R.string.ok))
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            loginToServer(username, password);
+                        }
+                    })
+                    .setCancelText(getActivity().getString(R.string.cancel))
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    })
+                    .show();
+        }
     }
 
 

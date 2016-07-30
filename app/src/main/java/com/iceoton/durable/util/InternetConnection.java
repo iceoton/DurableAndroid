@@ -14,19 +14,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class InternetConnection {
-    Context mContext;
-
-    public InternetConnection(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public boolean isNetworkConnected() {
+    public static boolean isNetworkConnected(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
     }
 
-    public boolean isInternetAvailable(int timeOutMilliseconds) {
+    public static boolean isInternetAvailable(Context mContext, int timeOutMilliseconds) {
         InetAddress inetAddress = null;
         try {
             Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {

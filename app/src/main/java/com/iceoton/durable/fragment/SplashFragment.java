@@ -23,8 +23,6 @@ public class SplashFragment extends Fragment {
     Runnable runnable;
     long delay_time;
     long time = 2000L;
-    InternetConnection connection;
-
     public SplashFragment() {
         // Required empty public constructor
     }
@@ -36,7 +34,6 @@ public class SplashFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_splash, container, false);
         initialView(rootView);
-        connection = new InternetConnection(getActivity());
 
         handler = new Handler();
         runnable = new Runnable() {
@@ -66,7 +63,7 @@ public class SplashFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (connection.isInternetAvailable(3000)) {
+        if (InternetConnection.isInternetAvailable(getActivity(), 3000)) {
             delay_time = time;
             handler.postDelayed(runnable, delay_time);
             time = System.currentTimeMillis();
