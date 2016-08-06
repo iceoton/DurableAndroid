@@ -1,5 +1,11 @@
 package com.iceoton.durable.rest;
 
+import android.content.Context;
+import android.graphics.Color;
+
+import com.iceoton.durable.R;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,5 +22,14 @@ public class ApiClient {
                     .build();
         }
         return retrofit;
+    }
+
+    public static SweetAlertDialog getProgressDialog(Context context){
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText(context.getString(R.string.loading));
+        pDialog.setCancelable(false);
+
+        return pDialog;
     }
 }
