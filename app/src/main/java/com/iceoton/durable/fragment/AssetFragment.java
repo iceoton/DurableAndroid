@@ -16,6 +16,7 @@ import com.iceoton.durable.model.Asset;
 import com.iceoton.durable.model.AssetResponse;
 import com.iceoton.durable.rest.ApiClient;
 import com.iceoton.durable.rest.ApiInterface;
+import com.iceoton.durable.rest.ResultCode;
 import com.iceoton.durable.util.InternetConnection;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class AssetFragment extends Fragment {
         return rootView;
     }
 
-    private void postQueryAssetList(){
+    private void postQueryAssetList() {
         if (InternetConnection.isNetworkConnected(getActivity())) {
 
             final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
@@ -73,17 +74,19 @@ public class AssetFragment extends Fragment {
                 @Override
                 public void onResponse(Call<AssetResponse> call, Response<AssetResponse> response) {
                     loadingDialog.dismissWithAnimation();
-                    if (response.body().getResult() != null) {
-                        ArrayList<Asset> assets = response.body().getResult();
-                        AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets);
-                        rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        rvAssetList.setAdapter(assetRecyclerAdapter);
-                    } else {
-                        Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
-                        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText(getActivity().getString(R.string.title_warning))
-                                .setContentText(response.body().getErrorMessage())
-                                .show();
+                    if (response.code() == ResultCode.OK) {
+                        if (response.body().getResult() != null) {
+                            ArrayList<Asset> assets = response.body().getResult();
+                            AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets);
+                            rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            rvAssetList.setAdapter(assetRecyclerAdapter);
+                        } else {
+                            Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText(getActivity().getString(R.string.title_warning))
+                                    .setContentText(response.body().getErrorMessage())
+                                    .show();
+                        }
                     }
                 }
 
