@@ -1,5 +1,6 @@
 package com.iceoton.durable.rest;
 
+import com.iceoton.durable.model.AssetResponse;
 import com.iceoton.durable.model.UserResponse;
 
 import retrofit2.Call;
@@ -12,4 +13,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api-v1.php")
     Call<UserResponse> userLogin(@Field("tag") String tag, @Field("data") String data);
+
+    @FormUrlEncoded
+    @POST("api-v1.php")
+    Call<AssetResponse> postActionByTag(@Field("tag") String tag);
 }
