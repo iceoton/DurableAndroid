@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.AssetFragment;
 import com.iceoton.durable.fragment.MainFragment;
+import com.iceoton.durable.fragment.ReportFragment;
 import com.iceoton.durable.util.AppPreference;
 
 public class MainActivity extends AppCompatActivity
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_asset) {
             replaceFragment(AssetFragment.newInstance());
         } else if (id == R.id.nav_report) {
-
+            replaceFragment(ReportFragment.newInstance());
         } else if (id == R.id.nav_member) {
 
         } else if (id == R.id.nav_setting) {
