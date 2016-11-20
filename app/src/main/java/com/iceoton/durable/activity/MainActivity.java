@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iceoton.durable.R;
-import com.iceoton.durable.fragment.AssetFragment;
-import com.iceoton.durable.fragment.MainFragment;
+import com.iceoton.durable.fragment.AssetListFragment;
+import com.iceoton.durable.fragment.HomeFragment;
 import com.iceoton.durable.fragment.ReportFragment;
 import com.iceoton.durable.util.AppPreference;
 
@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity
         setupView();
 
         if (savedInstanceState == null) {
-            replaceFragment(MainFragment.newInstance());
+            replaceFragment(HomeFragment.newInstance());
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
     }
 
     private void setupView(){
+        // setup user info
         AppPreference appPreference = new AppPreference(MainActivity.this);
         TextView txtName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtName);
         txtName.setText(appPreference.getUserName());
@@ -87,9 +88,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            replaceFragment(MainFragment.newInstance());
+            replaceFragment(HomeFragment.newInstance());
         } else if (id == R.id.nav_asset) {
-            replaceFragment(AssetFragment.newInstance());
+            replaceFragment(AssetListFragment.newInstance());
         } else if (id == R.id.nav_report) {
             replaceFragment(ReportFragment.newInstance());
         } else if (id == R.id.nav_member) {

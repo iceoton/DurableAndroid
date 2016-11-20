@@ -28,16 +28,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AssetFragment extends Fragment {
+public class AssetListFragment extends Fragment {
     @BindView(R.id.recycler_view)
     RecyclerView rvAssetList;
 
-    public AssetFragment() {
+    public AssetListFragment() {
         // Required empty public constructor
     }
 
-    public static AssetFragment newInstance() {
-        AssetFragment fragment = new AssetFragment();
+    public static AssetListFragment newInstance() {
+        AssetListFragment fragment = new AssetListFragment();
 
         return fragment;
     }
