@@ -1,6 +1,7 @@
 package com.iceoton.durable.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.iceoton.durable.R;
+import com.iceoton.durable.activity.AssetDetailActivity;
 import com.iceoton.durable.adapter.AssetRecyclerAdapter;
 import com.iceoton.durable.model.Asset;
 import com.iceoton.durable.model.AssetResponse;
@@ -18,6 +21,7 @@ import com.iceoton.durable.rest.ApiClient;
 import com.iceoton.durable.rest.ApiInterface;
 import com.iceoton.durable.rest.ResultCode;
 import com.iceoton.durable.util.InternetConnection;
+import com.iceoton.durable.widget.RecyclerTouchListener;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetListFragment extends Fragment {
+    final static String TAG = AssetListFragment.class.getName();
     @BindView(R.id.recycler_view)
     RecyclerView rvAssetList;
 
@@ -76,10 +81,25 @@ public class AssetListFragment extends Fragment {
                     loadingDialog.dismissWithAnimation();
                     if (response.code() == ResultCode.OK) {
                         if (response.body().getResult() != null) {
-                            ArrayList<Asset> assets = response.body().getResult();
+                            final ArrayList<Asset> assets = response.body().getResult();
                             AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets);
                             rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rvAssetList.setAdapter(assetRecyclerAdapter);
+                            rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvAssetList, new RecyclerTouchListener.ClickListener() {
+                                @Override
+                                public void onClick(View view, int position) {
+                                    String json = new Gson().toJson(assets.get(position));
+                                    Log.d(TAG, json);
+                                    Intent intent = new Intent(getActivity(), AssetDetailActivity.class);
+                                    intent.putExtra("json", json);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onLongClick(View view, int position) {
+
+                                }
+                            }));
                         } else {
                             Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
