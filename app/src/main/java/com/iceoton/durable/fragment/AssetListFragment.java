@@ -9,9 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.adapter.AssetRecyclerAdapter;
+import com.iceoton.durable.listener.ClickListener;
+import com.iceoton.durable.listener.RecyclerTouchListener;
 import com.iceoton.durable.model.Asset;
 import com.iceoton.durable.model.AssetResponse;
 import com.iceoton.durable.model.IntentParams;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import hugo.weaving.DebugLog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +43,7 @@ public class AssetListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @DebugLog
     public static AssetListFragment newInstance(Bundle bundle) {
         AssetListFragment fragment = new AssetListFragment();
         fragment.setArguments(bundle);
@@ -71,7 +76,8 @@ public class AssetListFragment extends Fragment {
             loadingDialog.show();
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call call = apiService.postActionByTag("getAllAsset");
+            //TODO change to pos
+            Call call = apiService.postGetAssetList("getAllAsset");
             call.enqueue(new Callback<AssetResponse>() {
 
                 @Override
@@ -79,10 +85,23 @@ public class AssetListFragment extends Fragment {
                     loadingDialog.dismissWithAnimation();
                     if (response.code() == ResultCode.OK) {
                         if (response.body().getResult() != null) {
-                            ArrayList<Asset> assets = response.body().getResult();
-                            AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets);
+                            final ArrayList<Asset> assets = response.body().getResult();
+                            AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets, getActivity());
                             rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rvAssetList.setAdapter(assetRecyclerAdapter);
+                            ClickListener clickListener = new ClickListener() {
+                                @Override
+                                public void onClick(View view, int position) {
+                                    Toast.makeText(getActivity(), "item at " + assets.get(position).getCode(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onLongClick(View view, int position) {
+
+                                }
+                            };
+                            rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),rvAssetList, clickListener));
+
                         } else {
                             Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
@@ -124,5 +143,7 @@ public class AssetListFragment extends Fragment {
 
 
     }
+
+
 
 }
