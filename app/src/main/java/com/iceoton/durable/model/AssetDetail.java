@@ -92,6 +92,11 @@ public class AssetDetail {
         public String getName() {
             return name;
         }
+
+        @Override
+        public String toString() {
+            return code.concat(" - ").concat(name);
+        }
     }
 
     public static class Location {
@@ -109,6 +114,11 @@ public class AssetDetail {
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return code.concat(" - ").concat(name);
         }
     }
 
@@ -128,6 +138,11 @@ public class AssetDetail {
         public String getName() {
             return name;
         }
+
+        @Override
+        public String toString() {
+            return code.concat(" - ").concat(name);
+        }
     }
 
     public static class Source {
@@ -145,6 +160,11 @@ public class AssetDetail {
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return code.concat(" - ").concat(name);
         }
     }
 
