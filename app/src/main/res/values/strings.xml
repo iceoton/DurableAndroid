@@ -13,4 +13,5 @@
     <string name="cancel">ยกเลิก</string>
     <string name="please_enter_data">กรุณากรอกข้อมูลให้ครบ</string>
     <string name="loading">กำลังโหลด...</string>
+    <string name="title_asset_detail">รายละเอียดครุภัณฑ์</string>
 </resources>
