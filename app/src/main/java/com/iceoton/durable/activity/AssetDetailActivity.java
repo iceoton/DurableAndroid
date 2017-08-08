@@ -14,9 +14,9 @@ public class AssetDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_detail);
 
         if(savedInstanceState == null){
-            String json = getIntent().getStringExtra("json");
+            Bundle bundle = getIntent().getExtras();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer, AssetDetailFragment.newInstance(json))
+                    .add(R.id.contentContainer, AssetDetailFragment.newInstance(bundle))
                     .commit();
         }
 

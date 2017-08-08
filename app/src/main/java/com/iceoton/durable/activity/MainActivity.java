@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iceoton.durable.R;
-import com.iceoton.durable.fragment.AssetListFragment;
+import com.iceoton.durable.fragment.AssetFragment;
 import com.iceoton.durable.fragment.HomeFragment;
 import com.iceoton.durable.fragment.ReportFragment;
 import com.iceoton.durable.util.AppPreference;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             replaceFragment(HomeFragment.newInstance());
         } else if (id == R.id.nav_asset) {
-            replaceFragment(AssetListFragment.newInstance());
+            replaceFragment(AssetFragment.newInstance());
         } else if (id == R.id.nav_report) {
             replaceFragment(ReportFragment.newInstance());
         } else if (id == R.id.nav_setting) {
