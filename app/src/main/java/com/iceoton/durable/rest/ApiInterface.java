@@ -19,6 +19,9 @@ public interface ApiInterface {
     @POST("api-v1.php")
     Call<AssetResponse> postGetAssetList(@Field("tag") String tag);
 
+    @FormUrlEncoded
+    @POST("api-v1.php")
+    Call<AssetResponse> postGetAssetByType(@Field("tag") String tag, @Field("data") String data);
 
     @FormUrlEncoded
     @POST("api-v1.php")

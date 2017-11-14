@@ -14,4 +14,6 @@
     <string name="please_enter_data">กรุณากรอกข้อมูลให้ครบ</string>
     <string name="loading">กำลังโหลด...</string>
     <string name="title_asset_detail">รายละเอียดครุภัณฑ์</string>
+    <string name="title_durable_property">สินทรัพย์ถาวร</string>
+    <string name="title_durable_material">วัสดุถาวร</string>
 </resources>

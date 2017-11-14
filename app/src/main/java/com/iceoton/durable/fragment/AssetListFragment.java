@@ -24,6 +24,9 @@ import com.iceoton.durable.rest.ApiInterface;
 import com.iceoton.durable.rest.ResultCode;
 import com.iceoton.durable.util.InternetConnection;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -38,7 +41,7 @@ public class AssetListFragment extends Fragment {
     @BindView(R.id.recycler_view)
     RecyclerView rvAssetList;
 
-    private int categoryId;
+    private int assetTypeId;
 
     public AssetListFragment() {
         // Required empty public constructor
@@ -55,7 +58,7 @@ public class AssetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryId = getArguments().getInt(IntentParams.CATEGORY_ID);
+            assetTypeId = getArguments().getInt(IntentParams.TYPE_ID);
         }
     }
 
@@ -77,8 +80,14 @@ public class AssetListFragment extends Fragment {
             loadingDialog.show();
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            //TODO change to pos
-            Call call = apiService.postGetAssetList("getAllAsset");
+            JSONObject data = new JSONObject();
+            try {
+                data.put("typeId", assetTypeId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Call call = apiService.postGetAssetByType("getAssetByType", data.toString());
             call.enqueue(new Callback<AssetResponse>() {
 
                 @Override
@@ -106,7 +115,7 @@ public class AssetListFragment extends Fragment {
 
                                 }
                             };
-                            rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),rvAssetList, clickListener));
+                            rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvAssetList, clickListener));
 
                         } else {
                             Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
@@ -149,7 +158,6 @@ public class AssetListFragment extends Fragment {
 
 
     }
-
 
 
 }

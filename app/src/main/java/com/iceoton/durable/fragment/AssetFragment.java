@@ -17,10 +17,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AssetFragment extends Fragment implements View.OnClickListener{
-    @BindView(R.id.layoutCat1)
-    FrameLayout layoutCat1;
-    @BindView(R.id.layoutCat2)
-    FrameLayout layoutCat2;
+    @BindView(R.id.layoutAssetType1)
+    FrameLayout layoutAssetType1;
+    @BindView(R.id.layoutAssetType2)
+    FrameLayout layoutAssetType2;
 
     public AssetFragment() {
         // Required empty public constructor
@@ -33,8 +33,8 @@ public class AssetFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setupView() {
-        layoutCat1.setOnClickListener(this);
-        layoutCat2.setOnClickListener(this);
+        layoutAssetType1.setOnClickListener(this);
+        layoutAssetType2.setOnClickListener(this);
     }
 
     @Override
@@ -57,16 +57,16 @@ public class AssetFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v == layoutCat1){
-            openAssetListByCategory(0);
-        } else if(v == layoutCat2){
-            openAssetListByCategory(0);
+        if(v == layoutAssetType1){
+            openAssetListByType(1);
+        } else if(v == layoutAssetType2){
+            openAssetListByType(2);
         }
     }
 
-    private void openAssetListByCategory(int categoryId){
+    private void openAssetListByType(int typeId){
         Intent intentToAssetList = new Intent(getActivity(), AssetListActivity.class);
-        intentToAssetList.putExtra(IntentParams.CATEGORY_ID, categoryId);
+        intentToAssetList.putExtra(IntentParams.TYPE_ID, typeId);
         getActivity().startActivity(intentToAssetList);
     }
 }

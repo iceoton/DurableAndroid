@@ -1,9 +1,6 @@
 package com.iceoton.durable.model;
 
-/**
- * Created by iceoton on 7/15/2017 AD.
- */
-
 public class IntentParams {
     public static final String CATEGORY_ID = "category_id";
+    public static final String TYPE_ID = "type_id";
 }

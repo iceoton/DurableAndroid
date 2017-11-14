@@ -13,7 +13,7 @@
         android:text="เลือกประเภทครุภัณฑ์"/>
 
     <FrameLayout
-        android:id="@+id/layoutCat1"
+        android:id="@+id/layoutAssetType1"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginLeft="16dp"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="สินทรัพย์ถาวร"
+            android:text="@string/title_durable_property"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_gravity="center"/>
@@ -36,7 +36,7 @@
         android:layout_height="16dp"/>
 
     <FrameLayout
-        android:id="@+id/layoutCat2"
+        android:id="@+id/layoutAssetType2"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginLeft="16dp"
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="สินทรัพย์ถาวร"
+            android:text="@string/title_durable_material"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_gravity="center"/>
