@@ -16,4 +16,5 @@
     <string name="title_asset_detail">รายละเอียดครุภัณฑ์</string>
     <string name="title_durable_property">สินทรัพย์ถาวร</string>
     <string name="title_durable_material">วัสดุถาวร</string>
+    <string name="hint_edit_text_search_asset">ระบุรหัสครุภัณฑ์</string>
 </resources>

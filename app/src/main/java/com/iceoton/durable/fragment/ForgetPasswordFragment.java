@@ -79,11 +79,11 @@ public class ForgetPasswordFragment extends Fragment {
                 .build();
 
         CanomCakeService canomCakeService = retrofit.create(CanomCakeService.class);
-        Call call = canomCakeService.sendForgetPassword("forgetPassword", data.toString());
-        call.enqueue(new Callback<ForgetPasswordResponse>() {
+        Call callApiService = canomCakeService.sendForgetPassword("forgetPassword", data.toString());
+        callApiService.enqueue(new Callback<ForgetPasswordResponse>() {
 
             @Override
-            public void onResponse(Call<ForgetPasswordResponse> call, Response<ForgetPasswordResponse> response) {
+            public void onResponse(Call<ForgetPasswordResponse> callApiService, Response<ForgetPasswordResponse> response) {
                 progressBar.hide();
                 if (response.body().getSuccessValue() == 1) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
@@ -112,7 +112,7 @@ public class ForgetPasswordFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ForgetPasswordResponse> call, Throwable t) {
+            public void onFailure(Call<ForgetPasswordResponse> callApiService, Throwable t) {
                 Log.d("DEBUG", "Call CanomCake-API failure." + "\n" + t.getMessage());
                 progressBar.hide();
             }
