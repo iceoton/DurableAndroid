@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(AssetFragment.newInstance());
         } else if (id == R.id.nav_report) {
             replaceFragment(ReportFragment.newInstance());
-        } else if (id == R.id.nav_setting) {
+        } /*else if (id == R.id.nav_setting) {
 
-        } else if (id == R.id.nav_logout) {
+        } */else if (id == R.id.nav_logout) {
             logout();
         }
 

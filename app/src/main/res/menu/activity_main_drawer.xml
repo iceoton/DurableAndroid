@@ -22,10 +22,10 @@
 
     <item android:title="">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_menu_setting"
-                android:title="ตั้งค่า" />
+                android:title="ตั้งค่า" />-->
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_logout"
