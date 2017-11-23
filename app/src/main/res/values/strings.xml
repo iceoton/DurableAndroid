@@ -18,4 +18,8 @@
     <string name="title_durable_material">วัสดุถาวร</string>
     <string name="hint_edit_text_search_asset">ระบุรหัสครุภัณฑ์</string>
     <string name="text_manage">จัดการ</string>
+    <string name="dialog_label_asset_status">สถานะ :</string>
+    <string name="dialog_label_asset_location">สถานที่ตั้ง :</string>
+    <string name="button_cancel">ยกเลิก</string>
+    <string name="button_save">บันทึก</string>
 </resources>
