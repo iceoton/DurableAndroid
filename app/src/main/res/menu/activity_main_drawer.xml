@@ -5,15 +5,15 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
-            android:title="หน้าแรก" />
+            android:title="@string/title_home" />
         <item
             android:id="@+id/nav_asset"
             android:icon="@drawable/ic_menu_asset"
-            android:title="ครุภัณฑ์" />
+            android:title="@string/title_durable" />
         <item
             android:id="@+id/nav_report"
             android:icon="@drawable/ic_menu_report"
-            android:title="รายงาน" />
+            android:title="@string/title_report" />
 <!--        <item
             android:id="@+id/nav_member"
             android:icon="@drawable/ic_menu_member"
@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_logout"
-                android:title="ออกจากระบบ" />
+                android:title="@string/title_sign_out" />
         </menu>
     </item>
 

@@ -15,13 +15,17 @@ import android.widget.Toast;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.AssetFragment;
+import com.iceoton.durable.fragment.BaseFragment;
 import com.iceoton.durable.fragment.HomeFragment;
 import com.iceoton.durable.fragment.ReportFragment;
 import com.iceoton.durable.util.AppPreference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    List<Fragment> fragmentList = new ArrayList<>();
     private NavigationView navigationView;
 
     @Override
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void setupView(){
+    private void setupView() {
         // setup user info
         AppPreference appPreference = new AppPreference(MainActivity.this);
         TextView txtName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtName);
@@ -65,12 +69,24 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        boolean handled = false;
+        for(Fragment f : fragmentList) {
+            if(f instanceof BaseFragment) {
+                handled = ((BaseFragment)f).onBackPressed();
+                if(handled) {
+                    break;
+                }
+            }
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            super.onBackPressed();
-        } else {
+            if(!handled) {
+                super.onBackPressed();
+            }
+        } else if(!handled) {
             if (back_pressed + 2000 > System.currentTimeMillis()) {
                 super.onBackPressed(); // Exit
             } else {
@@ -86,7 +102,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        setTitle(item.getTitle());
         if (id == R.id.nav_home) {
             replaceFragment(HomeFragment.newInstance());
         } else if (id == R.id.nav_asset) {
@@ -95,7 +111,7 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(ReportFragment.newInstance());
         } /*else if (id == R.id.nav_setting) {
 
-        } */else if (id == R.id.nav_logout) {
+        } */ else if (id == R.id.nav_logout) {
             logout();
         }
 
@@ -104,10 +120,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contentContainer, fragment)
                 .commit();
+        fragmentList.clear();
+        fragmentList.add(fragment);
     }
 
     private void logout() {

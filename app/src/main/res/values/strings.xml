@@ -6,6 +6,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="title_home">หน้าแรก</string>
+    <string name="title_durable">ครุภัณฑ์</string>
+    <string name="title_report">รายงาน</string>
+    <string name="title_sign_out">ออกจากระบบ</string>
+
     <string name="action_settings">ตั้งค่า</string>
     <string name="title_warning">แจ้งเตือน ?</string>
     <string name="internet_connection_fail">ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ \nลองใหม่อีกครั้ง</string>
