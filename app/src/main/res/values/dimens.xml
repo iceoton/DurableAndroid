@@ -15,5 +15,6 @@
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
 
+    <dimen name="space_8">8dp</dimen>
     <dimen name="space_16">16dp</dimen>
 </resources>

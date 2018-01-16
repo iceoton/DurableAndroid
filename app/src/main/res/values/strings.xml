@@ -27,4 +27,6 @@
     <string name="dialog_label_asset_location">สถานที่ตั้ง :</string>
     <string name="button_cancel">ยกเลิก</string>
     <string name="button_save">บันทึก</string>
+    <string name="text_project_name">โปรแกรมครุภัณฑ์และตรวจครุภัณฑ์\nบนระบบปฏิบัติการแอนดรอยด์</string>
+    <string name="text_department">กองแผนและวิชาการ การประปาส่วนภูมิภาคเขต 10</string>
 </resources>

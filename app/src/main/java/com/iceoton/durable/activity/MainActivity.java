@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             replaceFragment(HomeFragment.newInstance());
             navigationView.setCheckedItem(R.id.nav_home);
+            setTitle(R.string.title_home);
         }
 
     }
