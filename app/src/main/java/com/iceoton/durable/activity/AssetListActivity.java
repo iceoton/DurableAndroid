@@ -33,13 +33,20 @@ public class AssetListActivity extends AppCompatActivity {
         // Initializing Toolbar and setting it as the actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.arrow_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        //toolbar.setNavigationIcon(R.drawable.arrow_back);
+        if (getSupportActionBar() != null) {
+            /*getSupportActionBar().setTitle(strTitle);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);*/
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            //getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_back_indicator);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
     }
     
 }

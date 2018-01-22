@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.iceoton.durable.R;
+import com.iceoton.durable.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,12 +48,23 @@ public class ReportFragment extends BaseFragment {
             public boolean shouldOverrideUrlLoading(WebView  view, String  url){
                 if (Uri.parse(url).getHost().equals("139.59.255.225")) {
                     // This is my web site, so do not override; let my WebView load the page
+                    setBackArrowToolbar();
                     return false;
                 }
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView webView, String url) {
+                super.onPageFinished(webView, url);
+                if(!webView.canGoBack()) {
+                    if(getActivity() instanceof MainActivity) {
+                        (( MainActivity)getActivity()).setDefaultToolbarHamberger();
+                    }
+                }
             }
         };
         webViewReport.setWebViewClient(webViewClient);
@@ -69,6 +81,12 @@ public class ReportFragment extends BaseFragment {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private void setBackArrowToolbar() {
+        if(getActivity() instanceof MainActivity) {
+            (( MainActivity)getActivity()).setBackArrowIndicator();
         }
     }
 }
