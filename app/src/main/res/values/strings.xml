@@ -10,6 +10,10 @@
     <string name="title_durable">ครุภัณฑ์</string>
     <string name="title_report">รายงาน</string>
     <string name="title_sign_out">ออกจากระบบ</string>
+    <string name="title_report_pick_up">รายงานการเบิกครุภัณฑ์</string>
+    <string name="title_report_borrow">รายงานการยืมครุภัณฑ์</string>
+    <string name="title_report_return">รายงานการคืนครุภัณฑ์</string>
+    <string name="title_report_repair">รายงานการส่งซ่อมครุภัณฑ์</string>
 
     <string name="action_settings">ตั้งค่า</string>
     <string name="title_warning">แจ้งเตือน ?</string>
