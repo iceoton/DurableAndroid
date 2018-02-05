@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.AssetFragment;
 import com.iceoton.durable.fragment.BaseFragment;
@@ -70,6 +71,11 @@ public class MainActivity extends AppCompatActivity
         txtName.setText(appPreference.getUserName());
         TextView txtEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtEmail);
         txtEmail.setText(appPreference.getUserEmail());
+        //http://139.59.255.225/durable/resource/users/thumbs/c073c720e7e8a53eaf34fc2f203e09c2.jpg
+        SimpleDraweeView draweeViewPhoto = (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        String userUrl = "http://139.59.255.225/durable/resource/users/thumbs/" + appPreference.getUserPhoto();
+        draweeViewPhoto.setImageURI(userUrl);
+
     }
 
     // Get back press work only at second press and notify user to press again to exit.

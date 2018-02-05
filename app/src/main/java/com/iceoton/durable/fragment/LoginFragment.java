@@ -113,6 +113,7 @@ public class LoginFragment extends Fragment {
                         appPreference.saveUserId(user.getUserKey());
                         appPreference.saveUserName(user.getFirstName() + "  " + user.getLastName());
                         appPreference.saveUserEmail(user.getEmail());
+                        appPreference.saveUserPhoto(user.getPhoto());
                         appPreference.saveLoginStatus(true);
 
                         startMainActivity();

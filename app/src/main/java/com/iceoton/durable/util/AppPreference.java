@@ -50,6 +50,16 @@ public class AppPreference {
         return sharedPref.getString("user_email", "");
     }
 
+    public void saveUserPhoto(String photoUrl) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("user_photo", photoUrl);
+        editor.apply();
+    }
+
+    public String getUserPhoto() {
+        return sharedPref.getString("user_photo", "");
+    }
+
     public void saveAppLanguage(String language) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("appLanguage", language);
