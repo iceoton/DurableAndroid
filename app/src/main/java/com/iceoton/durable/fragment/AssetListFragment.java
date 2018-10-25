@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.iceoton.durable.R;
 import com.iceoton.durable.activity.AssetDetailActivity;
@@ -24,6 +27,9 @@ import com.iceoton.durable.rest.ApiInterface;
 import com.iceoton.durable.rest.ResultCode;
 import com.iceoton.durable.util.InternetConnection;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -35,10 +41,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetListFragment extends Fragment {
+    private static final String TAG = AssetListFragment.class.getSimpleName();
     @BindView(R.id.recycler_view)
     RecyclerView rvAssetList;
+    @BindView(R.id.editTextSearch)
+    EditText editTextSearch;
 
-    private int categoryId;
+    Call callApiService;
+    ArrayList<Asset> assets = new ArrayList<>();
+    AssetRecyclerAdapter assetRecyclerAdapter;
+
+    private int assetTypeId;
 
     public AssetListFragment() {
         // Required empty public constructor
@@ -55,7 +68,7 @@ public class AssetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryId = getArguments().getInt(IntentParams.CATEGORY_ID);
+            assetTypeId = getArguments().getInt(IntentParams.TYPE_ID);
         }
     }
 
@@ -64,52 +77,87 @@ public class AssetListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_asset_list, container, false);
         ButterKnife.bind(this, rootView);
-
-        postQueryAssetList();
+        setupViews();
+        postQueryAssetList("");
 
         return rootView;
     }
 
-    private void postQueryAssetList() {
-        if (InternetConnection.isNetworkConnected(getActivity())) {
+    private void setupViews() {
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
-            final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
-            loadingDialog.show();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if(charSequence.length() >= 2) {
+                    postQueryAssetList(charSequence.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        assetRecyclerAdapter = new AssetRecyclerAdapter(assets, getActivity());
+        rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvAssetList.setAdapter(assetRecyclerAdapter);
+        ClickListener clickListener = new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if(assets.size() > 0) {
+                    //Toast.makeText(getActivity(), "item at " + assets.get(position).getCode(), Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("asset_code", assets.get(position).getCode());
+                    Intent intentToAssetDetailPage = new Intent(getActivity(), AssetDetailActivity.class);
+                    intentToAssetDetailPage.putExtras(bundle);
+                    getActivity().startActivity(intentToAssetDetailPage);
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        };
+        rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvAssetList, clickListener));
+    }
+
+    private void postQueryAssetList(final String queryAssetCode) {
+        if (InternetConnection.isNetworkConnected(getActivity())) {
+            if(callApiService != null){
+                if(!callApiService.isCanceled()) {
+                    callApiService.cancel();
+                }
+            }
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            //TODO change to pos
-            Call call = apiService.postGetAssetList("getAllAsset");
-            call.enqueue(new Callback<AssetResponse>() {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("typeId", assetTypeId);
+                data.put("queryAssetCode", queryAssetCode);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            callApiService = apiService.postGetAssetByType("getAssetByType", data.toString());
+            callApiService.enqueue(new Callback<AssetResponse>() {
 
                 @Override
                 public void onResponse(Call<AssetResponse> call, Response<AssetResponse> response) {
-                    loadingDialog.dismissWithAnimation();
                     if (response.code() == ResultCode.OK) {
                         if (response.body().getResult() != null) {
-                            final ArrayList<Asset> assets = response.body().getResult();
-                            AssetRecyclerAdapter assetRecyclerAdapter = new AssetRecyclerAdapter(assets, getActivity());
-                            rvAssetList.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            rvAssetList.setAdapter(assetRecyclerAdapter);
-                            ClickListener clickListener = new ClickListener() {
-                                @Override
-                                public void onClick(View view, int position) {
-                                    //Toast.makeText(getActivity(), "item at " + assets.get(position).getCode(), Toast.LENGTH_SHORT).show();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("asset_code", assets.get(position).getCode());
-                                    Intent intentToAssetDetailPage = new Intent(getActivity(), AssetDetailActivity.class);
-                                    intentToAssetDetailPage.putExtras(bundle);
-                                    getActivity().startActivity(intentToAssetDetailPage);
-                                }
-
-                                @Override
-                                public void onLongClick(View view, int position) {
-
-                                }
-                            };
-                            rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),rvAssetList, clickListener));
-
+                            assets.clear();
+                            assets.addAll(response.body().getResult());
+                            assetRecyclerAdapter.notifyDataSetChanged();
                         } else {
                             Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
+                            assets.clear();
+                            assetRecyclerAdapter.notifyDataSetChanged();
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                                     .setTitleText(getActivity().getString(R.string.title_warning))
                                     .setContentText(response.body().getErrorMessage())
@@ -120,7 +168,6 @@ public class AssetListFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<AssetResponse> call, Throwable t) {
-                    loadingDialog.dismissWithAnimation();
                     Log.d("DEBUG", getClass().getName() + " Call API failure." + "\n" + t.getMessage());
                 }
             });
@@ -134,7 +181,7 @@ public class AssetListFragment extends Fragment {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
-                            postQueryAssetList();
+                            postQueryAssetList(queryAssetCode);
                         }
                     })
                     .setCancelText(getActivity().getString(R.string.cancel))
@@ -149,7 +196,6 @@ public class AssetListFragment extends Fragment {
 
 
     }
-
 
 
 }

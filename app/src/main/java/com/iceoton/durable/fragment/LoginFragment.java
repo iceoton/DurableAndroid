@@ -2,7 +2,6 @@ package com.iceoton.durable.fragment;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -106,11 +105,8 @@ public class LoginFragment extends Fragment {
     private void loginToServer(final String username, final String password) {
         // ก่อนทำการเชื่อมต่อ api จะทำการตรวจสอบว่าเชื่อมต่อ internet หรือไม่ ?
         if (InternetConnection.isNetworkConnected(getActivity())) {
-            final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText(getActivity().getString(R.string.loading));
-            pDialog.setCancelable(false);
-            pDialog.show();
+            final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
+            loadingDialog.show();
 
             JSONObject data = new JSONObject();
             try {
@@ -126,7 +122,7 @@ public class LoginFragment extends Fragment {
 
                 @Override
                 public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                    pDialog.dismissWithAnimation();
+                    loadingDialog.dismissWithAnimation();
                     if (response.body().getResult() != null) {
                         User user = response.body().getResult();
                         Log.d("DEBUG", "id = " + user.getUserKey());
@@ -135,6 +131,7 @@ public class LoginFragment extends Fragment {
                         appPreference.saveUserId(user.getUserKey());
                         appPreference.saveUserName(user.getFirstName() + "  " + user.getLastName());
                         appPreference.saveUserEmail(user.getEmail());
+                        appPreference.saveUserPhoto(user.getPhoto());
                         appPreference.saveLoginStatus(true);
 
                         startMainActivity();
@@ -149,7 +146,7 @@ public class LoginFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<UserResponse> call, Throwable t) {
-                    pDialog.dismissWithAnimation();
+                    loadingDialog.dismissWithAnimation();
                     Log.d("DEBUG", "Call API failure." + "\n" + t.getMessage());
                 }
             });

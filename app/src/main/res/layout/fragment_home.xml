@@ -12,16 +12,21 @@
 
         <ImageView
             android:id="@+id/btn_scan_qrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:src="@drawable/scan_qr_code" />
+            android:src="@drawable/logo_pwa_512px" />
 
         <TextView
+            android:layout_marginTop="@dimen/space_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="แสกนเพื่อค้นหาครุภัณฑ์" />
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_size_large"
+            android:text="@string/text_project_name" />
 
         <View
             android:layout_width="match_parent"
@@ -33,7 +38,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="รายการเคลื่อนไหวล่าสุด" />
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_size_normal"
+            android:text="@string/text_department" />
 
     </LinearLayout>
 

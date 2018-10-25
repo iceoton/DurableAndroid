@@ -8,4 +8,13 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="normal_padding">8dp</dimen>
     <dimen name="normal_margin">8dp</dimen>
+
+    <dimen name="text_size_2xlarge">48sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+    <dimen name="text_size_large">19sp</dimen>
+    <dimen name="text_size_normal">15sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_16">16dp</dimen>
 </resources>
