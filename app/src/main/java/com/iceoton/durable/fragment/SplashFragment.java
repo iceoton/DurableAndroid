@@ -17,7 +17,11 @@ import com.iceoton.durable.activity.MainActivity;
 import com.iceoton.durable.util.AppPreference;
 import com.iceoton.durable.util.InternetConnection;
 
-
+/**
+ * Fragment สำหรับแสดงหน้าต้อนหรับ เมื่อเวลาผ่านไปตามตัวแปร time
+ * หาก login อยู่แอพจะนำไปสู่หน้า MainActivity ถ้าไม่ได้ login
+ * แอพจะนำไปสู่หน้า LoginActivity
+ */
 public class SplashFragment extends Fragment {
     Handler handler;
     Runnable runnable;
@@ -40,11 +44,14 @@ public class SplashFragment extends Fragment {
             @Override
             public void run() {
                 AppPreference appPreference = new AppPreference(getActivity());
+                // ทำการเช็คว่ามีการ login อยู่หรือไม่
                 if (appPreference.getLoginStatus()) {
+                    //หาก login อยู่แอพจะนำไปสู่หน้า MainActivity
                     Intent intentToMain = new Intent(getActivity(), MainActivity.class);
                     startActivity(intentToMain);
                     getActivity().finish();
                 } else {
+                    //ถ้าไม่ได้ login แอพจะนำไปสู่หน้า LoginActivity
                     Intent intentToLogin = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intentToLogin);
                     getActivity().finish();
@@ -65,7 +72,7 @@ public class SplashFragment extends Fragment {
         super.onResume();
         if (InternetConnection.isInternetAvailable(getActivity(), 3000)) {
             delay_time = time;
-            handler.postDelayed(runnable, delay_time);
+            handler.postDelayed(runnable, delay_time); // สั่งให้ทำงานหลังจากเวลาผ่านไป
             time = System.currentTimeMillis();
         } else {
             showAlertDialog("Internet not available", "เชื่อมต่ออินเทอร์เน็ตไม่ได้ ลองใหม่อีกครั้ง");
@@ -76,8 +83,13 @@ public class SplashFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        handler.removeCallbacks(runnable);
-        time = delay_time - (System.currentTimeMillis() - time);
+        /** หากมีการย่อแอพก่อนเวลาตามตัวแปร time จะผ่านไป
+         * แอพจะไม่เปิดไปหน้าอื่นต่อ
+         * จะทำการบันทึกเวลาที่อยู่หน้านี้ไว้ เพื่อเวลากลับมาหน้านี้
+         * ก็จะทำการนับเวลาต่อ
+         */
+        handler.removeCallbacks(runnable); // ลบ runnable ที่จะพาไปหน้าอื่นต่อ
+        time = delay_time - (System.currentTimeMillis() - time);// เก็บเวลาที่เหลือจากการรอ
     }
 
     /**

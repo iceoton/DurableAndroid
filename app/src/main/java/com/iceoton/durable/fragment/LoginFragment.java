@@ -31,6 +31,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment หน้า login
+ */
 public class LoginFragment extends Fragment {
     EditText etUsername, etPassword;
     Button btnLogin;
@@ -52,6 +55,10 @@ public class LoginFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     * @param rootView
+     */
     private void initialView(View rootView) {
         etUsername = (EditText) rootView.findViewById(R.id.username);
         etPassword = (EditText) rootView.findViewById(R.id.password);
@@ -59,7 +66,9 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startMainActivity();
+                /**
+                 * เมื่อกดปุ่ม login ให้ทำการตรวจสอบไปที่ api
+                 */
                 String username = etUsername.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
                 if(!username.isEmpty() && !password.isEmpty()) {
@@ -77,6 +86,7 @@ public class LoginFragment extends Fragment {
         txtForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // เมื่อกดปุ่มลิมรหัสผ่านจะเปิดไปหน้าลืมรหัสผ่าน
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.contentContainer, ForgetPasswordFragment.newInstance())
                         .addToBackStack(null)
@@ -87,7 +97,14 @@ public class LoginFragment extends Fragment {
         imgLogo = (ImageView) rootView.findViewById(R.id.image_logo);
     }
 
+    /**
+     * ทำการเชื่อมต่อไปที่ api เพื่อทำการ loin หากสำเร็จจะได้ข้อมูล user ที่ทำการ login
+     * แล้วทำการเก็บไว้ที่ Preference ของแอพ
+     * @param username ชื่อผู้ใช้งานที่ทำการ login
+     * @param password รหัสผ่านของชื่อผู้ใช้งานที่ทำการ login
+     */
     private void loginToServer(final String username, final String password) {
+        // ก่อนทำการเชื่อมต่อ api จะทำการตรวจสอบว่าเชื่อมต่อ internet หรือไม่ ?
         if (InternetConnection.isNetworkConnected(getActivity())) {
             final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -113,6 +130,7 @@ public class LoginFragment extends Fragment {
                     if (response.body().getResult() != null) {
                         User user = response.body().getResult();
                         Log.d("DEBUG", "id = " + user.getUserKey());
+                        // ทำการเก็บข้อมูล user ที่ login สำเร็จ ไว้ที่ Preference ของแอพ
                         AppPreference appPreference = new AppPreference(getActivity());
                         appPreference.saveUserId(user.getUserKey());
                         appPreference.saveUserName(user.getFirstName() + "  " + user.getLastName());
@@ -159,7 +177,9 @@ public class LoginFragment extends Fragment {
         }
     }
 
-
+    /**
+     * ฟังก์ชันนี้จะทำการเปิดหน้าหลัก (MainActivity)
+     */
     private void startMainActivity() {
         Intent intentToMain = new Intent(getActivity(), MainActivity.class);
         getActivity().startActivity(intentToMain);

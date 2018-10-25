@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.LoginFragment;
 
-
+/**
+ * Activity แสดงหน้า login
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @Override

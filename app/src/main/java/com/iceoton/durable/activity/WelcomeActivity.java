@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.SplashFragment;
 
-
+/**
+ * Activity สำหรับแสดงหน้าต้อนหรับ
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override
