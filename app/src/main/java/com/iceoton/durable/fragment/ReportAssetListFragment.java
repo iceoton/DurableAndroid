@@ -40,6 +40,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment แสดงหน้ารายการของครุภัณฑ์ในรายงาน
+ */
 public class ReportAssetListFragment extends Fragment {
     private static final String TAG = ReportAssetListFragment.class.getSimpleName();
     @BindView(R.id.recycler_view)
@@ -83,6 +86,9 @@ public class ReportAssetListFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     */
     private void setupViews() {
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,6 +133,11 @@ public class ReportAssetListFragment extends Fragment {
         rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvAssetList, clickListener));
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงรายการครุภัณฑ์ สามารถระบุรหัสครุภัณฑ์เพื่อดึงเฉพาะครุภัณฑ์ที่ต้องการได้
+     * @param queryAssetCode รหัสของครุภัณฑ์ที่ต้องการค้นหา สามารถส่งไปเฉพาะบางส่วนได้
+     *                       หรือส่งไปเป็นค่าว่างเปล่า "" ก็จะได้รายการครุภัณฑ์ทั้งหมด
+     */
     private void postQueryReportAssetList(final String queryAssetCode) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if(callApiService != null){

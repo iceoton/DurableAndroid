@@ -16,6 +16,9 @@ import com.iceoton.durable.model.IntentParams;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Fragment แสดงหน้าชนิดของครุภัณฑ์ (Asset type)
+ */
 public class AssetFragment extends Fragment implements View.OnClickListener{
     @BindView(R.id.layoutAssetType1)
     FrameLayout layoutAssetType1;
@@ -58,12 +61,16 @@ public class AssetFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v == layoutAssetType1){
-            openAssetListByType(1);
+            openAssetListByType(1); //เปิดไปหน้ารายการสินทรัพย์ถาวร
         } else if(v == layoutAssetType2){
-            openAssetListByType(2);
+            openAssetListByType(2); //เปิดไปหน้ารายการวัสดุถาวร
         }
     }
 
+    /**
+     * เปิดไปที่หน้ารายการครุภัณฑ์ตามชนิดของครุภัณฑ์นั้นๆ
+     * @param typeId ไอดี ของชนิดครุภัณฑ์ที่ต้องการเปิดดูรายการครุภัณฑ์
+     */
     private void openAssetListByType(int typeId){
         Intent intentToAssetList = new Intent(getActivity(), AssetListActivity.class);
         intentToAssetList.putExtra(IntentParams.TYPE_ID, typeId);

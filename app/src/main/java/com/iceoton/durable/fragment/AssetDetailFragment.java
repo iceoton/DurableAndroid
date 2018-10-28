@@ -40,6 +40,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment แสดงหน้ารายละเอียดครุภัณฑ์ (Asset detail)
+ */
 public class AssetDetailFragment extends Fragment implements View.OnClickListener {
     final static String TAG = AssetDetailFragment.class.getSimpleName();
     @BindView(R.id.textAssetCode)
@@ -79,8 +82,11 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
         return fragment;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     */
     private void setupView() {
-        postQueryAssetDetail();
+        postQueryAssetDetail(assetCode);
         btnManage.setOnClickListener(this);
     }
 
@@ -102,6 +108,10 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
         return rootView;
     }
 
+    /**
+     * ฟังก์ชันนี้จะถูกเรียกใช้งานเมื่อมีการคลิกที่ view ใด view หนึ่ง
+     * @param v view ที่มีการคลิก
+     */
     @Override
     public void onClick(View v) {
         if (v == btnManage) {
@@ -156,18 +166,23 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("asset_code", assetCode);
+        outState.putString("asset_code", assetCode); //เก็บรฟัสครุภัณฑ์ไว้เมื่อมีการคืนทรัพยากรให้กับเครื่อง
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            assetCode = savedInstanceState.getString("asset_code");
+            assetCode = savedInstanceState.getString("asset_code"); //ดึงรหัสครุภัณฑ์ที่เก็บไว้เมื่อแอพได้ทรัพยากรคืนมา
         }
     }
 
-    private void postQueryAssetDetail() {
+    /**
+     * ติดต่อไปที่ api เพื่อดึงรายละเอียดของครุภัณฑ์ เมือดึงสำเร็จ ฟังก์ชัน setAssetDetailValue() จะถูกเรียกใช้งานต่อไป
+     * สิ่งที่ต้องใช้ในการดึงรายละเอียดของครุภัณฑ์คือ รหัสครุภัณฑ์
+     * @param assetCode รหัสครุภัณฑ์ที่ต้องการรายละเอียด
+     */
+    private void postQueryAssetDetail(final String assetCode) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
 
             final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
@@ -175,7 +190,7 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
             JSONObject data = new JSONObject();
             try {
-                data.put("code", assetCode);
+                data.put("code", assetCode); //รหัสครุภัณฑ์ที่ต้องการรายละเอียด
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -216,7 +231,7 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
-                            postQueryAssetDetail();
+                            postQueryAssetDetail(assetCode);
                         }
                     })
                     .setCancelText(getActivity().getString(R.string.cancel))
@@ -231,6 +246,10 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงข้อมูลสถานที่เก็บครุภัณฑ์
+     * @param loadingDialog ตัวแสดง loading ในขณะที่กำหลังโหลดข้อมูล
+     */
     private void getAllAssetLocation(final SweetAlertDialog loadingDialog) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if (!loadingDialog.isShowing()) {
@@ -288,6 +307,10 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงข้อมูลสถานะของครุภัณฑ์
+     * @param loadingDialog ตัวแสดง loading ในขณะที่กำหลังโหลดข้อมูล
+     */
     private void getAllAssetStatus(final SweetAlertDialog loadingDialog) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if (!loadingDialog.isShowing()) {
@@ -345,6 +368,11 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อทำการแก้ไขข้อมูลครุภัณฑ์
+     * @param newLocationId สถานที่เก็บครุภัณฑ์ใหม่ที่ทำการแก้ไข
+     * @param newStatusId สถานะของครุภัณฑ์ใหม่ที่ทำการแก้ไข
+     */
     private void postEditAsset(int newLocationId, int newStatusId) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
 
@@ -353,7 +381,7 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
             JSONObject data = new JSONObject();
             try {
-                data.put("id", assetDetail.getId());
+                data.put("id", assetDetail.getId()); // ไอดี ของครุภัณฑ์ที่ต้องการทำการแก้ไข
                 data.put("location_id", newLocationId);
                 data.put("status_id", newStatusId);
             } catch (JSONException e) {
@@ -396,7 +424,7 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
-                            postQueryAssetDetail();
+                            postQueryAssetDetail(assetCode);
                         }
                     })
                     .setCancelText(getActivity().getString(R.string.cancel))
@@ -411,6 +439,10 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * ทำการแสดงค่ารายละเอียดครุภัณฑ์ ลงบน view
+     * @param assetDetail รายละเอียดของครุภัณฑ์ที่ต้องการทำการแสดง
+     */
     @DebugLog
     private void setAssetDetailValue(AssetDetail assetDetail) {
         if (assetDetail != null) {
@@ -434,6 +466,12 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * ค้นหาตำแหน่งของ itemToFind ในรายการ locations
+     * @param locations list ของสถานที่เก็บครภัณฑ์
+     * @param itemToFind สถานที่เก็บครุภัณฑ์ที่ต้องการค้นหาตำแหน่งใน list
+     * @return ตำแหน่งของ itemToFind ใน locations, 0 หลากไม่เจอ
+     */
     private int findPositionInLocationList(ArrayList<AssetDetail.Location> locations, AssetDetail.Location itemToFind){
         int position = 0;
         for (int i = 0; i < locations.size();i++) {
@@ -445,6 +483,12 @@ public class AssetDetailFragment extends Fragment implements View.OnClickListene
         return position;
     }
 
+    /**
+     * ค้นหาตำแหน่งของ itemToFind ในรายการ statuses
+     * @param statuses list ของสถานะ
+     * @param itemToFind สถานะของครุภัณฑ์ที่ต้องการค้นหาตำแหน่งใน list
+     * @return ตำแหน่งของ itemToFind ใน statuses, 0 หลากไม่เจอ
+     */
     private int findPositionInStatusList(ArrayList<AssetDetail.Status> statuses, AssetDetail.Status itemToFind){
         int position = 0;
         for (int i = 0; i < statuses.size();i++) {

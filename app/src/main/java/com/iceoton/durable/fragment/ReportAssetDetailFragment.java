@@ -33,6 +33,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment แสดงหน้ารายละเอียดของครุภัณฑ์ ของรายงาน
+ */
 public class ReportAssetDetailFragment extends Fragment implements View.OnClickListener {
     final static String TAG = ReportAssetDetailFragment.class.getSimpleName();
     @BindView(R.id.textAssetCode)
@@ -71,7 +74,7 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
     }
 
     private void setupView() {
-        postQueryAssetDetail();
+        postQueryAssetDetail(assetCode);
     }
 
     @Override
@@ -111,7 +114,12 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void postQueryAssetDetail() {
+    /**
+     * ติดต่อไปที่ api เพื่อดึงรายละเอียดของครุภัณฑ์ เมือดึงสำเร็จ ฟังก์ชัน setAssetDetailValue() จะถูกเรียกใช้งานต่อไป
+     * สิ่งที่ต้องใช้ในการดึงรายละเอียดของครุภัณฑ์คือ รหัสครุภัณฑ์
+     * @param assetCode รหัสครุภัณฑ์ที่ต้องการรายละเอียด
+     */
+    private void postQueryAssetDetail(final String assetCode) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
 
             final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
@@ -160,7 +168,7 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
-                            postQueryAssetDetail();
+                            postQueryAssetDetail(assetCode);
                         }
                     })
                     .setCancelText(getActivity().getString(R.string.cancel))
@@ -175,6 +183,10 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
 
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงข้อมูลสถานที่เก็บครุภัณฑ์
+     * @param loadingDialog ตัวแสดง loading ในขณะที่กำหลังโหลดข้อมูล
+     */
     private void getAllAssetLocation(final SweetAlertDialog loadingDialog) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if (!loadingDialog.isShowing()) {
@@ -232,6 +244,10 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
 
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงข้อมูลสถานะของครุภัณฑ์
+     * @param loadingDialog ตัวแสดง loading ในขณะที่กำหลังโหลดข้อมูล
+     */
     private void getAllAssetStatus(final SweetAlertDialog loadingDialog) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if (!loadingDialog.isShowing()) {
@@ -289,72 +305,10 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
 
     }
 
-    private void postEditAsset(int newLocationId, int newStatusId) {
-        if (InternetConnection.isNetworkConnected(getActivity())) {
-
-            final SweetAlertDialog loadingDialog = ApiClient.getProgressDialog(getActivity());
-            loadingDialog.show();
-
-            JSONObject data = new JSONObject();
-            try {
-                data.put("id", assetDetail.getId());
-                data.put("location_id", newLocationId);
-                data.put("status_id", newStatusId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call call = apiService.postEditAsset("editAsset", data.toString());
-            call.enqueue(new Callback<AssetDetailResponse>() {
-
-                @Override
-                public void onResponse(Call<AssetDetailResponse> call, Response<AssetDetailResponse> response) {
-                    loadingDialog.dismissWithAnimation();
-                    if (response.code() == ResultCode.OK) {
-                        if (response.body().getResult() != null) {
-                            setAssetDetailValue(response.body().getResult());
-                        } else {
-                            Log.d("DEBUG", getClass().getName() + " error: " + response.body().getErrorMessage());
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText(getActivity().getString(R.string.title_warning))
-                                    .setContentText(response.body().getErrorMessage())
-                                    .show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<AssetDetailResponse> call, Throwable t) {
-                    loadingDialog.dismissWithAnimation();
-                    Log.d("DEBUG", getClass().getName() + " Call API failure." + "\n" + t.getMessage());
-                }
-            });
-
-        } else {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText(getActivity().getString(R.string.title_warning))
-                    .setContentText(getActivity().getString(R.string.internet_connection_fail))
-                    .setConfirmText(getActivity().getString(R.string.ok))
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismissWithAnimation();
-                            postQueryAssetDetail();
-                        }
-                    })
-                    .setCancelText(getActivity().getString(R.string.cancel))
-                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismissWithAnimation();
-                        }
-                    })
-                    .show();
-        }
-
-    }
-
+    /**
+     * ทำการแสดงค่ารายละเอียดครุภัณฑ์ ลงบน view
+     * @param assetDetail รายละเอียดของครุภัณฑ์ที่ต้องการทำการแสดง
+     */
     @DebugLog
     private void setAssetDetailValue(AssetDetail assetDetail) {
         if (assetDetail != null) {
@@ -376,27 +330,5 @@ public class ReportAssetDetailFragment extends Fragment implements View.OnClickL
         } else {
             Log.d(TAG, "Can't set value to view, because asset detail value is null.");
         }
-    }
-
-    private int findPositionInLocationList(ArrayList<AssetDetail.Location> locations, AssetDetail.Location itemToFind){
-        int position = 0;
-        for (int i = 0; i < locations.size();i++) {
-            if(locations.get(i).getCode().equals(itemToFind.getCode())) {
-                position = i;
-            }
-        }
-
-        return position;
-    }
-
-    private int findPositionInStatusList(ArrayList<AssetDetail.Status> statuses, AssetDetail.Status itemToFind){
-        int position = 0;
-        for (int i = 0; i < statuses.size();i++) {
-            if(statuses.get(i).getCode().equals(itemToFind.getCode())) {
-                position = i;
-            }
-        }
-
-        return position;
     }
 }

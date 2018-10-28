@@ -40,6 +40,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment แสดงหน้ารายการครุภัณฑ์ (list of asset)
+ */
 public class AssetListFragment extends Fragment {
     private static final String TAG = AssetListFragment.class.getSimpleName();
     @BindView(R.id.recycler_view)
@@ -83,6 +86,9 @@ public class AssetListFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     */
     private void setupViews() {
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,6 +133,11 @@ public class AssetListFragment extends Fragment {
         rvAssetList.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvAssetList, clickListener));
     }
 
+    /**
+     * ติดต่อไปที่ api เพื่อดึงรายการครุภัณฑ์ สามารถระบุรหัสครุภัณฑ์เพื่อดึงเฉพาะครุภัณฑ์ที่ต้องการได้
+     * @param queryAssetCode รหัสของครุภัณฑ์ที่ต้องการค้นหา สามารถส่งไปเฉพาะบางส่วนได้
+     *                       หรือส่งไปเป็นค่าว่างเปล่า "" ก็จะได้รายการครุภัณฑ์ทั้งหมด
+     */
     private void postQueryAssetList(final String queryAssetCode) {
         if (InternetConnection.isNetworkConnected(getActivity())) {
             if(callApiService != null){
@@ -138,8 +149,8 @@ public class AssetListFragment extends Fragment {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             JSONObject data = new JSONObject();
             try {
-                data.put("typeId", assetTypeId);
-                data.put("queryAssetCode", queryAssetCode);
+                data.put("typeId", assetTypeId); //รหัสชนิดของครุภัณฑ์ (สินทรัพท์ถาวร/ วัสดุถาวร )
+                data.put("queryAssetCode", queryAssetCode); //รหัสของครุภัณฑ์
             } catch (JSONException e) {
                 e.printStackTrace();
             }

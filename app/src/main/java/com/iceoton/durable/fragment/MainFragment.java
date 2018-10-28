@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.iceoton.durable.R;
 
+/**
+ * Fragment หน้าแรกของครุภัณฑ์
+ */
 public class MainFragment extends Fragment {
 
     public MainFragment() {

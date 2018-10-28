@@ -19,6 +19,9 @@ import com.iceoton.durable.model.IntentParams;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Fragment แสดงหน้ารายงานครุภัณฑ์
+ */
 public class ReportFragment extends BaseFragment {
     private static final String TAG = ReportActivity.class.getSimpleName();
     @BindView(R.id.web_view)
@@ -44,6 +47,10 @@ public class ReportFragment extends BaseFragment {
         return rootView;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     * @param rootView view หลักของหน้านี้
+     */
     private void setupView(View rootView) {
         webViewReport.getSettings().setJavaScriptEnabled(true);
         webViewReport.loadUrl("http://139.59.255.225/durable/dashboard/mobile/report.php");
@@ -52,6 +59,9 @@ public class ReportFragment extends BaseFragment {
             public boolean shouldOverrideUrlLoading(WebView  view, String  url){
                 if (Uri.parse(url).getHost().equals("139.59.255.225")) {
 
+                    /**
+                     * เมื่อมีการคลิกที่ link ต่างๆของ report แอพจะพาไปหน้าของ report ตามชนิดการจัดการนั้นๆ
+                     */
                     String lastPathSegment = Uri.parse(url).getLastPathSegment();
                     Log.d(TAG, "LastPathSegment = " + lastPathSegment);
                     if(lastPathSegment.equalsIgnoreCase("report_pickup.php")) {
@@ -103,12 +113,19 @@ public class ReportFragment extends BaseFragment {
         }
     }
 
+    /**
+     * ตั้งค่า icon ตรงเมนูให้เป็นลูกศรกดย้อนกลับ และเมื่อกดแอพจะพาย้อนกลับไปหน้าก่อนหน้านี้
+     */
     private void setBackArrowToolbar() {
         if(getActivity() instanceof MainActivity) {
             (( MainActivity)getActivity()).setBackArrowIndicator();
         }
     }
 
+    /**
+     * เปิดไปหน้ารายงาน การจัดการครุภัณฑ์
+     * @param manageType ชนิดของการจัดการครุภัณฑ์
+     */
     private void openReportAssetList(int manageType){
         Intent intentToReport = new Intent(getActivity(), ReportActivity.class);
         intentToReport.putExtra(IntentParams.MANAGE_TYPE, manageType);

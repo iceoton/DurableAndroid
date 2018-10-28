@@ -9,7 +9,9 @@ import com.iceoton.durable.R;
 import com.iceoton.durable.fragment.AssetListFragment;
 import com.iceoton.durable.model.IntentParams;
 
-
+/**
+ * Activity แสดงหน้ารายการครุภัณฑ์ (list of asset)
+ */
 public class AssetListActivity extends AppCompatActivity {
 
     @Override
@@ -29,6 +31,10 @@ public class AssetListActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * ตั้งค่า bar ด้านบนของหน้านี้ให้เป็น icon ตรงเมนูให้เป็นลูกศรกดย้อนกลับ
+     * และเมื่อกดแอพจะพาย้อนกลับไปหน้าก่อนหน้านี้
+     */
     private void initialActionBar(){
         // Initializing Toolbar and setting it as the actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
