@@ -16,7 +16,9 @@ import com.iceoton.durable.util.AppPreference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * หน้าการลืมรหัสผ่าน
+ */
 public class ForgetPasswordFragment extends Fragment {
     EditText etEmail;
     Button btnForgetPassword;

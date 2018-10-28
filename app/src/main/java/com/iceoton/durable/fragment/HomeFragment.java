@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 
 import com.iceoton.durable.R;
 
+/**
+ * Fragment หน้าแรกของแอปพลิเคชัน หน้านี้ไม่ได้มีการสร้างฟังก์ชันการใช้งานใด ๆ ไว้
+ * เป็นหน้าเปล่า ๆ สามารถมีฟังก์ชันอื่น ๆ เช่นการค้นหาครุภัณฑ์ด้วย QR code หรือ Bar code ได้
+ */
 public class HomeFragment extends Fragment {
 
     public HomeFragment() {
@@ -38,8 +42,10 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     * @param rootView view หลักของหน้านี้
+     */
     private void setupView(View rootView){
-
-
     }
 }

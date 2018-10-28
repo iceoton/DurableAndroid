@@ -28,6 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Activity หลักของแอปพลิเคชัน เมื่อเข้าแอพหลังจากผ่านหน้าต้อนรับจะเข้าสู่หน้านี้
+ * ในคลาสนี้มีการสร้างเมนูหลัก (side menu)
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     List<Fragment> fragmentList = new ArrayList<>();
@@ -64,6 +68,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * ทำการสร้างตัวแปรที่เชื่อมต่อกับ view ต่างๆ และตั้งค่าว่าเมื่อกดที่ view ต่างๆ จะเกิดอะไรขึ้น
+     */
     private void setupView() {
         // setup user info
         AppPreference appPreference = new AppPreference(MainActivity.this);
@@ -81,6 +88,9 @@ public class MainActivity extends AppCompatActivity
     // Get back press work only at second press and notify user to press again to exit.
     private static long back_pressed;
 
+    /**
+     * ฟังก์ชันนี้จะทำงานเมื่อมีการกดปุ่ม back ที่เครื่อง
+     */
     @Override
     public void onBackPressed() {
         boolean handled = false;
@@ -101,6 +111,7 @@ public class MainActivity extends AppCompatActivity
                 super.onBackPressed();
             }
         } else if(!handled) {
+            // ให้เป็นการออกจากแอพถ้าหากกดปุ่ม back ในเวลาใกล้ๆกัน (กด 2 ครั้งใน 2 วินาที)
             if (back_pressed + 2000 > System.currentTimeMillis()) {
                 super.onBackPressed(); // Exit
             } else {
@@ -111,21 +122,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * ฟังก์ชันนี้จะทำงานเมื่อมีการเลือกเมนูหลักทางด้านข้างเมนูใดเมนูหนึ่ง
+     * @param item เมนูที่ทำการเลือก
+     * @return true to display the item as the selected item
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        setTitle(item.getTitle());
-        if (id == R.id.nav_home) {
+        /** Handle navigation view item clicks here.
+         * สำหรับจัดการเมื่อกดเมนูหลัก
+        **/
+        int id = item.getItemId(); // ดึงค่า id ของเมนู
+        setTitle(item.getTitle()); // ตั้งค่า title ของหน้าเป็นเมนูที่ทำการคลิกเลือก
+        if (id == R.id.nav_home) {// เมื่อกดเมนู "หน้าแรก"
             replaceFragment(HomeFragment.newInstance());
-        } else if (id == R.id.nav_asset) {
+        } else if (id == R.id.nav_asset) { // เมื่อกดเมนู "ครุภัณฑ์"
             replaceFragment(AssetFragment.newInstance());
-        } else if (id == R.id.nav_report) {
+        } else if (id == R.id.nav_report) { // เมื่อกดเมนู "รายงาน"
             replaceFragment(ReportFragment.newInstance());
         } /*else if (id == R.id.nav_setting) {
 
-        } */ else if (id == R.id.nav_logout) {
+        } */ else if (id == R.id.nav_logout) { // เมื่อกดเมนู "ออกจากระบบ"
             logout();
         }
 
@@ -134,6 +152,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * แทนที่ fragment ด้วย fragment ที่ส่งมา
+     * @param fragment fragment ที่ต้องการแทนที่
+     */
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contentContainer, fragment)
@@ -142,6 +164,10 @@ public class MainActivity extends AppCompatActivity
         fragmentList.add(fragment);
     }
 
+    /**
+     * ฟังก์ชันออกจากระบบ โดบยจะทำการล้างข้อมูลที่ถูก save ไว้ใน Preference
+     * และทำการ เปิดไหน้าสำหรับเข้าสู่ระบบ เพื่อให้เข้าสู่ระบบใหม่
+     */
     private void logout() {
         AppPreference appPreference = new AppPreference(MainActivity.this);
         appPreference.saveUserId("");
@@ -154,6 +180,9 @@ public class MainActivity extends AppCompatActivity
         finish();
     }
 
+    /**
+     * ตั้งค่า icon ตรงเมนูให้เป็นลูกศรกดย้อนกลับ และเมื่อกดแอพจะพาย้อนกลับไปหน้าก่อนหน้านี้
+     */
     public void setBackArrowIndicator() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -167,6 +196,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * ตั้งค่า icon ตรงเมนูให้เป็นขีดสามขีด และเมื่อกดแอพจะเปิดเมนูด้านข้าง
+     */
     public void setDefaultToolbarHamberger() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
