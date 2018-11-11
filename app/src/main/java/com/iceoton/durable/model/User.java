@@ -2,6 +2,9 @@ package com.iceoton.durable.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model จำลอง user ว่าประกอบไปด้วยข้อมูลอะไรบ้าง
+ */
 public class User {
     @SerializedName("user_key")
     private String userKey;

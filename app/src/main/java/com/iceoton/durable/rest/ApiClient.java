@@ -11,6 +11,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * สำหรับสร้าง client ด้วย Retrofit Library เพื่อติดต่อไปที่ API
+ */
 public class ApiClient {
     public static final String BASE_URL = "http://139.59.255.225/durable/api/";
     private static Retrofit retrofit = null;
@@ -30,6 +33,12 @@ public class ApiClient {
         return retrofit;
     }
 
+    /**
+     * สร้าง loading dialog สำหรับแสดงเวลาแอพประมวลผลอะไรที่ต้องใช้เวลารอ
+     * เช่น การติดต่อไปที่ API
+     * @param context Context ของหน้าที่จะแสดง loading
+     * @return loading dialog
+     */
     public static SweetAlertDialog getProgressDialog(Context context) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));

@@ -13,6 +13,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * สำหรับตรวจสอบว่าอุปกรณ์มีการเชื่อมต่อ Internet หรือไม่
+ */
 public class InternetConnection {
     public static boolean isNetworkConnected(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -20,6 +23,12 @@ public class InternetConnection {
         return cm.getActiveNetworkInfo() != null;
     }
 
+    /**
+     * ทำการตรวจสอบการเชื่อมต่อ Internet ด้วยการทดสอบเรียกเว็บไซต์ google.com ดูว่าจะได้ผลลัพธ์หรือไม่
+     * @param mContext Context ของหน้าแอพที่ต้องการตรวจสอบ
+     * @param timeOutMilliseconds ค่าจำกัดเวลาในการทดสอบการเชื่อมต่อ internet หน่วยเป็นมิลลิวินานี
+     * @return true หากติดต่อไปที่ google.com ผ่าน internet ได้, false ในกรณีติดต่อไม่ได้หรือกรณีอื่นๆ
+     */
     public static boolean isInternetAvailable(Context mContext, int timeOutMilliseconds) {
         InetAddress inetAddress = null;
         try {

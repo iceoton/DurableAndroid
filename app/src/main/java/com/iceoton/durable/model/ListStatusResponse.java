@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+/**
+ * Model จำลองผลลัพธ์เวลาติดต่อไปที่ API เพื่อขอรายการสถานะครุภัณฑ์
+ */
 public class ListStatusResponse {
     @SerializedName("success")
     private int successValue;

@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+/**
+ * Model จำลองผลลัพธ์เวลาติดต่อไปที่ API เพื่อขอข้อมูลรายการเอียดครุภัณฑ์
+ */
 public class AssetResponse {
     @SerializedName("success")
     private int successValue;

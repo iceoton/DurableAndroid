@@ -11,6 +11,12 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
+/***
+ * Interface สำหรับส่งให้ Retrofit Library
+ * จะเป็นที่รวมฟังก์ชันที่จะติดต่อไปที่ API ซึ่งก็คือการสร้าง HTTP request ติดต่อไปที่เว็บ
+ * โดยจะต้องระบุว่าจะติดต่อด้วยวิธีใด (Post, Get, Put, ...) ติดต่อด้วยข้อมูลอะไร
+ *  (@field, @body, ...) และได้ผลลัพธ์กลับมายังไง (Call<รูปแบบผลลัพธ์> )
+ */
 public interface ApiInterface {
 
     @FormUrlEncoded

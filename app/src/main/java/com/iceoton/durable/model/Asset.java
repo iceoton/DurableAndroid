@@ -2,6 +2,9 @@ package com.iceoton.durable.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model จำลองครุภัณฑ์
+ */
 public class Asset {
     @SerializedName("id")
     private int id;

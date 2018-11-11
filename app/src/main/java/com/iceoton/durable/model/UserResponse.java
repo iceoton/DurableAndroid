@@ -2,6 +2,9 @@ package com.iceoton.durable.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model จำลองผลลัพธ์เวลาติดต่อไปที่ API เพื่อขอข้อมูลของ User
+ */
 public class UserResponse {
     @SerializedName("success")
     private int successValue;
