@@ -13,6 +13,9 @@ import com.iceoton.durable.model.AssetDetail;
 
 import java.util.List;
 
+/**
+ * Adapter สำหรับจัดการการแสดง list of location (รายการสถานที่จัดเก็บครุภัณฑ์)
+ */
 public class ListLocationAdapter extends ArrayAdapter<AssetDetail.Location>{
     private static class ViewHolder {
         TextView textName;

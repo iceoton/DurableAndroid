@@ -13,6 +13,9 @@ import com.iceoton.durable.model.AssetDetail;
 
 import java.util.List;
 
+/**
+ * Adapter สำหรับจัดการการแสดง list of status (รายการสถานะครุภัณฑ์)
+ */
 public class ListStatusAdapter extends ArrayAdapter<AssetDetail.Status>{
     private static class ViewHolder {
         TextView textName;

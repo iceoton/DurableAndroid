@@ -6,6 +6,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * สำหรับสร้าง listener การคลิกให้กับ Recycler View เนื่องจากมันไม่มี listener สำหรับการคลิก
+ * เลยต้องทำการสร้างขึ้นมาเอง โดยอาศัยหลักการการแตะที่บริเวณใดๆของ item นั้นๆ บน Recycler View
+ */
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     private GestureDetector gestureDetector;
     private ClickListener clickListener;

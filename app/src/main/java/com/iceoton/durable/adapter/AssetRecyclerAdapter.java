@@ -15,8 +15,17 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Adapter สำหรับจัดการการแสดง list of assets (รายการครุภัณฑ์)
+ */
 public class AssetRecyclerAdapter extends RecyclerView.Adapter<AssetRecyclerAdapter.AssetViewHolder> {
+    /**
+     * context ของหน้าที่จะแสดง list of assets
+     */
     private Context mContext;
+    /**
+     * รายการครุภัณฑ์ที่ต้องการแสดง
+     */
     private ArrayList<Asset> mAssetList;
 
     public AssetRecyclerAdapter(ArrayList<Asset> mAssetList, Context context) {
@@ -48,6 +57,9 @@ public class AssetRecyclerAdapter extends RecyclerView.Adapter<AssetRecyclerAdap
         return mAssetList.get(position).getId();
     }
 
+    /**
+     * class holder สำหรับแสดงแต่ละ item ใน list ในที่นี้คือครุภัณฑ์ในรายการครุภัณฑ์
+     */
     public static class AssetViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txtCode) TextView txtCode;
         @BindView(R.id.txtName) TextView txtName;
@@ -59,6 +71,10 @@ public class AssetRecyclerAdapter extends RecyclerView.Adapter<AssetRecyclerAdap
             ButterKnife.bind(this, itemView);
         }
 
+        /**
+         * ทำการตั้งค่าข้อมูลครุภัณฑ์ลงบน view ของ item นี้
+         * @param asset ครุภัณฑ์ที่จะแสดงใน item นี้
+         */
         public void bind(Asset asset){
             txtCode.setText(asset.getCode());
             txtName.setText(asset.getName());
