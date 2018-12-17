@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * สำหรับสร้าง client ด้วย Retrofit Library เพื่อติดต่อไปที่ API
  */
 public class ApiClient {
-    public static final String BASE_URL = "http://139.59.255.225/durable/api/";
+    public static final String BASE_URL = "http://10.0.2.2:8888/durable/api/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
